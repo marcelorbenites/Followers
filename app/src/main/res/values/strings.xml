@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Followers</string>
+    <string name="fragment_follower_list_title">Followers</string>
 </resources>

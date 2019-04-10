@@ -24,7 +24,7 @@ class HttpFollowerServiceTest {
                 "John",
                 "Lennon",
                 "http://thebeatles.com/john",
-                Club("The Beatles", "http://thebeatles.com/logo"),
+                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
                 "Barclays Premier League"
             ),
             Follower(
@@ -32,7 +32,7 @@ class HttpFollowerServiceTest {
                 "Ringo",
                 "Starr",
                 "http://thebeatles.com/ringo",
-                Club("The Beatles", "http://thebeatles.com/logo"),
+                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
                 "Barclays Premier League"
             ),
             Follower(
@@ -40,7 +40,7 @@ class HttpFollowerServiceTest {
                 "George",
                 "Harrison",
                 "http://thebeatles.com/george",
-                Club("The Beatles", "http://thebeatles.com/logo"),
+                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
                 "Barclays Premier League"
             ),
             Follower(
@@ -48,7 +48,7 @@ class HttpFollowerServiceTest {
                 "Paul",
                 "Mccartney",
                 "http://thebeatles.com/paul",
-                Club("The Beatles", "http://thebeatles.com/logo"),
+                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
                 "Barclays Premier League"
             )
         )

@@ -7,4 +7,6 @@ data class Follower(
     val picture: String,
     val club: Club,
     val league: String
-)
+) {
+    val fullName = "$firstName $lastName"
+}

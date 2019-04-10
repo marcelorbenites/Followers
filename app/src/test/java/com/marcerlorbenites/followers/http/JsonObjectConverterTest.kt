@@ -28,7 +28,7 @@ class JsonObjectConverterTest {
                            "name":"Barclays Premier League"
                         },
                         "club":{
-                           "name":"The Beatles",
+                           "name":"The Beatles F.C.",
                            "logo_url":"http://thebeatles.com/logo"
                         }
                      }
@@ -43,7 +43,7 @@ class JsonObjectConverterTest {
                            "name":"Barclays Premier League"
                         },
                         "club":{
-                           "name":"The Beatles",
+                           "name":"The Beatles F.C.",
                            "logo_url":"http://thebeatles.com/logo"
                         }
                      }
@@ -57,7 +57,7 @@ class JsonObjectConverterTest {
                 "John",
                 "Lennon",
                 "http://thebeatles.com/john",
-                Club("The Beatles", "http://thebeatles.com/logo"),
+                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
                 "Barclays Premier League"
             ),
             Follower(
@@ -65,7 +65,7 @@ class JsonObjectConverterTest {
                 "Ringo",
                 "Starr",
                 "http://thebeatles.com/ringo",
-                Club("The Beatles", "http://thebeatles.com/logo"),
+                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
                 "Barclays Premier League"
             )
         )
