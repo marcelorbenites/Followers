@@ -13,10 +13,38 @@ class PlayerFollowerManagerTest {
     fun `Given follower service returns a list of followers When setup is called Then emit loaded state And the list of followers`() {
 
         val followerList = listOf(
-            Follower("John Lennon", "The Beatles", "Barclays Premier League"),
-            Follower("Ringo Starr", "The Beatles", "Barclays Premier League"),
-            Follower("George Harrison", "The Beatles", "Barclays Premier League"),
-            Follower("Paul Mccartney", "The Beatles", "Barclays Premier League")
+            Follower(
+                "1",
+                "John",
+                "Lennon",
+                "http://thebeatles.com/john",
+                Club("The Beatles", "http://thebeatles.com/logo"),
+                "Barclays Premier League"
+            ),
+            Follower(
+                "2",
+                "Ringo",
+                "Starr",
+                "http://thebeatles.com/ringo",
+                Club("The Beatles", "http://thebeatles.com/logo"),
+                "Barclays Premier League"
+            ),
+            Follower(
+                "3",
+                "George",
+                "Harrison",
+                "http://thebeatles.com/george",
+                Club("The Beatles", "http://thebeatles.com/logo"),
+                "Barclays Premier League"
+            ),
+            Follower(
+                "4",
+                "Paul",
+                "Mccartney",
+                "http://thebeatles.com/paul",
+                Club("The Beatles", "http://thebeatles.com/logo"),
+                "Barclays Premier League"
+            )
         )
         val manager = PlayerFollowerManager(
             FakeFollowerService(followerList),

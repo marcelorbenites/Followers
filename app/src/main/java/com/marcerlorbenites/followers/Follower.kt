@@ -1,3 +1,10 @@
 package com.marcerlorbenites.followers
 
-data class Follower(val name: String, val club: String, val league: String)
+data class Follower(
+    val id: String,
+    val firstName: String,
+    val lastName: String,
+    val picture: String,
+    val club: Club,
+    val league: String
+)
