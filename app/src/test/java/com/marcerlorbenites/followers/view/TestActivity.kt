@@ -1,16 +1,25 @@
-package com.marcerlorbenites.followers
+package com.marcerlorbenites.followers.view
 
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.marcerlorbenites.followers.FakeFollowerManager
+import com.marcerlorbenites.followers.FollowerManager
+import com.marcerlorbenites.followers.R
 
 class TestActivity : AppCompatActivity(), FollowerListViewContainer {
 
     var testFollowerManager: FollowerManager = FakeFollowerManager()
 
+    var testImageLoader: ImageLoader = FakeImageLoader()
+
     override val followerManager: FollowerManager by lazy {
         testFollowerManager
+    }
+
+    override val imageLoader: ImageLoader by lazy {
+        testImageLoader
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

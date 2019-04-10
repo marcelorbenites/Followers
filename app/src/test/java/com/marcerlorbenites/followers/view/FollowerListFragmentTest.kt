@@ -1,4 +1,4 @@
-package com.marcerlorbenites.followers
+package com.marcerlorbenites.followers.view
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -6,6 +6,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
+import com.marcerlorbenites.followers.*
 import com.marcerlorbenites.followers.state.State
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule

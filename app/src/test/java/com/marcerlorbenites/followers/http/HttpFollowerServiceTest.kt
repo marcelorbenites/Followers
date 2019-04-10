@@ -67,7 +67,7 @@ class HttpFollowerServiceTest {
         val request = server.takeRequest()
 
         assertEquals("GET", request.method)
-        assertEquals("/58/users/peter-holm/followers", request.path)
+        assertEquals("/followers", request.path)
     }
 
     @Test

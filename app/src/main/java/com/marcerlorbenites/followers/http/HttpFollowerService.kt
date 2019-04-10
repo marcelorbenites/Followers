@@ -13,7 +13,7 @@ class HttpFollowerService(
 ) : FollowerService {
     override fun getFollowers(): List<Follower> {
         val request = Request.Builder()
-            .url("${url}58/users/peter-holm/followers")
+            .url("${url}followers")
             .get()
             .build()
 

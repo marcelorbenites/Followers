@@ -25,6 +25,7 @@ buildscript {
         okHttpVersion = '3.11.0'
         mockkVersion = '1.8.13'
         byteBuddyAgentVersion = '1.9.7'
+        picassoVersion = '2.71828'
     }
 
     repositories {

@@ -1,11 +1,15 @@
-package com.marcerlorbenites.followers
+package com.marcerlorbenites.followers.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.marcerlorbenites.followers.Follower
+import com.marcerlorbenites.followers.R
 
 class FollowerListAdapter(
     private val inflater: LayoutInflater,
+    private val imageLoader: ImageLoader,
+    private val imageLoaderReference: String,
     private val items: MutableList<Follower> = mutableListOf()
 ) : RecyclerView.Adapter<FollowerViewHolder>() {
 
@@ -14,7 +18,11 @@ class FollowerListAdapter(
     override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerViewHolder {
-        return FollowerViewHolder(inflater.inflate(viewType, parent, false))
+        return FollowerViewHolder(
+            inflater.inflate(viewType, parent, false),
+            imageLoader,
+            imageLoaderReference
+        )
     }
 
     override fun onBindViewHolder(holder: FollowerViewHolder, position: Int) {

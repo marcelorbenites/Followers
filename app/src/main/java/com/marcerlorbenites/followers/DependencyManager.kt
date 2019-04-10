@@ -1,5 +1,5 @@
 package com.marcerlorbenites.followers
 
-interface FollowerListViewContainer {
+interface DependencyManager {
     val followerManager: FollowerManager
 }

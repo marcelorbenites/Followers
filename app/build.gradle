@@ -13,6 +13,7 @@ android {
         versionCode versionCodeApp
         versionName versionNameApp
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "FOLLOWER_BASE_URL", "\"${project.FOLLOWER_BASE_URL}\""
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -49,6 +50,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:${rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxandroid:${rxJavaAndroidVersion}"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
 
     testImplementation "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
     testImplementation "androidx.test:core:${androidTestCoreVersion}"
