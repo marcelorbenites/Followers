@@ -59,7 +59,8 @@ class FollowerListFragment : Fragment() {
         adapter = FollowerListAdapter(
             LayoutInflater.from(context),
             imageLoader!!,
-            IMAGE_LOADER_REFERENCE
+            IMAGE_LOADER_REFERENCE,
+            getString(R.string.fragment_follower_list_no_team)
         )
         followerList.layoutManager = LinearLayoutManager(context)
         followerList.adapter = adapter

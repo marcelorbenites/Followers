@@ -12,23 +12,27 @@ class JsonObjectConverter : JsonConverter {
         val followersJson = responseJson.getJSONArray("response")
 
         var followerJson: JSONObject
-        var teamJson: JSONObject
         var clubJson: JSONObject
-        var leagueJson: JSONObject
 
+        var club: Club?
         for (index in 0 until followersJson.length()) {
             followerJson = followersJson.getJSONObject(index)
-            teamJson = followerJson.getJSONObject("team")
-            clubJson = teamJson.getJSONObject("club")
-            leagueJson = teamJson.getJSONObject("league")
+            club = null
+
+            if (!followerJson.isNull("club")) {
+                clubJson = followerJson.getJSONObject("club")
+                if (!clubJson.isNull("name") && !clubJson.isNull("logo_url")) {
+                    club = Club(clubJson.getString("name"), clubJson.getString("logo_url"))
+                }
+            }
+
             followers.add(
                 Follower(
                     followerJson.getString("slug"),
                     followerJson.getString("firstname"),
                     followerJson.getString("lastname"),
                     followerJson.getString("profile_picture"),
-                    Club(clubJson.getString("name"), clubJson.getString("logo_url")),
-                    leagueJson.getString("name")
+                    club
                 )
             )
         }

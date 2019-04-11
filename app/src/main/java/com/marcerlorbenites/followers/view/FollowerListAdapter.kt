@@ -10,6 +10,7 @@ class FollowerListAdapter(
     private val inflater: LayoutInflater,
     private val imageLoader: ImageLoader,
     private val imageLoaderReference: String,
+    private val noClubText: String,
     private val items: MutableList<Follower> = mutableListOf()
 ) : RecyclerView.Adapter<FollowerViewHolder>() {
 
@@ -21,7 +22,8 @@ class FollowerListAdapter(
         return FollowerViewHolder(
             inflater.inflate(viewType, parent, false),
             imageLoader,
-            imageLoaderReference
+            imageLoaderReference,
+            noClubText
         )
     }
 

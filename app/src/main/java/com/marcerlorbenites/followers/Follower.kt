@@ -5,8 +5,8 @@ data class Follower(
     val firstName: String,
     val lastName: String,
     val picture: String,
-    val club: Club,
-    val league: String
+    val club: Club? = null
 ) {
     val fullName = "$firstName $lastName"
+    val hasClub = club != null
 }

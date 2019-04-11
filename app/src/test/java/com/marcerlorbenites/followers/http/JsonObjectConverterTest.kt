@@ -23,14 +23,9 @@ class JsonObjectConverterTest {
                      "firstname":"John",
                      "lastname":"Lennon",
                      "profile_picture":"http://thebeatles.com/john",
-                     "team":{
-                        "league":{
-                           "name":"Barclays Premier League"
-                        },
-                        "club":{
-                           "name":"The Beatles F.C.",
-                           "logo_url":"http://thebeatles.com/logo"
-                        }
+                     "club":{
+                       "name":"The Beatles F.C.",
+                       "logo_url":"http://thebeatles.com/logo"
                      }
                   },
                   {
@@ -38,14 +33,9 @@ class JsonObjectConverterTest {
                      "firstname":"Ringo",
                      "lastname":"Starr",
                      "profile_picture":"http://thebeatles.com/ringo",
-                     "team":{
-                        "league":{
-                           "name":"Barclays Premier League"
-                        },
-                        "club":{
-                           "name":"The Beatles F.C.",
-                           "logo_url":"http://thebeatles.com/logo"
-                        }
+                     "club":{
+                       "name":"The Beatles F.C.",
+                       "logo_url":"http://thebeatles.com/logo"
                      }
                   }
                 ]
@@ -57,16 +47,40 @@ class JsonObjectConverterTest {
                 "John",
                 "Lennon",
                 "http://thebeatles.com/john",
-                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
-                "Barclays Premier League"
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
             ),
             Follower(
                 "2",
                 "Ringo",
                 "Starr",
                 "http://thebeatles.com/ringo",
-                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
-                "Barclays Premier League"
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
+            )
+        )
+        val jsonConverter = JsonObjectConverter()
+        assertEquals(followerList, jsonConverter.parseFollowers(json))
+    }
+
+    @Test
+    fun `Given a follower json without a club When parse is called Then should return a list of followers`() {
+        val json = """
+            {
+               "response":[
+                  {
+                     "slug":"1",
+                     "firstname":"John",
+                     "lastname":"Lennon",
+                     "profile_picture":"http://thebeatles.com/john"
+                  }
+                ]
+            }
+        """.trimIndent()
+        val followerList = listOf(
+            Follower(
+                "1",
+                "John",
+                "Lennon",
+                "http://thebeatles.com/john"
             )
         )
         val jsonConverter = JsonObjectConverter()

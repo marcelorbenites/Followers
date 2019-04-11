@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Followers</string>
     <string name="fragment_follower_list_title">Followers</string>
+    <string name="fragment_follower_list_no_team">No Club</string>
 </resources>

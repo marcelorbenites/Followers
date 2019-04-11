@@ -18,32 +18,28 @@ class PlayerFollowerManagerTest {
                 "John",
                 "Lennon",
                 "http://thebeatles.com/john",
-                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
-                "Barclays Premier League"
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
             ),
             Follower(
                 "2",
                 "Ringo",
                 "Starr",
                 "http://thebeatles.com/ringo",
-                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
-                "Barclays Premier League"
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
             ),
             Follower(
                 "3",
                 "George",
                 "Harrison",
                 "http://thebeatles.com/george",
-                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
-                "Barclays Premier League"
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
             ),
             Follower(
                 "4",
                 "Paul",
                 "Mccartney",
                 "http://thebeatles.com/paul",
-                Club("The Beatles F.C.", "http://thebeatles.com/logo"),
-                "Barclays Premier League"
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
             )
         )
         val manager = PlayerFollowerManager(

@@ -10,7 +10,8 @@ import com.marcerlorbenites.followers.R
 class FollowerViewHolder(
     view: View,
     private val imageLoader: ImageLoader,
-    private val imageLoaderReference: String
+    private val imageLoaderReference: String,
+    private val noClubText: String
 ) : RecyclerView.ViewHolder(view) {
 
     private val name = itemView.findViewById<TextView>(R.id.name)
@@ -19,7 +20,11 @@ class FollowerViewHolder(
 
     fun setFollower(follower: Follower) {
         name.text = follower.fullName
-        clubName.text = follower.club.name
         imageLoader.load(picture, follower.picture, imageLoaderReference)
+        clubName.text = if (follower.hasClub) {
+            follower.club!!.name
+        } else {
+            noClubText
+        }
     }
 }

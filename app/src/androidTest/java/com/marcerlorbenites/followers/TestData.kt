@@ -11,14 +11,9 @@ class TestData {
                      "firstname":"John",
                      "lastname":"Lennon",
                      "profile_picture":"http://thebeatles.com/john",
-                     "team":{
-                        "league":{
-                           "name":"Barclays Premier League"
-                        },
-                        "club":{
-                           "name":"The Beatles F.C.",
-                           "logo_url":"http://thebeatles.com/logo"
-                        }
+                     "club":{
+                       "name":"The Beatles F.C.",
+                       "logo_url":"http://thebeatles.com/logo"
                      }
                   },
                   {
@@ -26,14 +21,9 @@ class TestData {
                      "firstname":"Ringo",
                      "lastname":"Starr",
                      "profile_picture":"http://thebeatles.com/ringo",
-                     "team":{
-                        "league":{
-                           "name":"Barclays Premier League"
-                        },
-                        "club":{
-                           "name":"The Beatles F.C.",
-                           "logo_url":"http://thebeatles.com/logo"
-                        }
+                     "club":{
+                       "name":"The Beatles F.C.",
+                       "logo_url":"http://thebeatles.com/logo"
                      }
                   }
                 ]
