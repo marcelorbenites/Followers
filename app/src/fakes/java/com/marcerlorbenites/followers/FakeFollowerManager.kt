@@ -7,4 +7,7 @@ class FakeFollowerManager(
 ) : FollowerManager(currentState) {
     override fun setup() {
     }
+
+    override fun loadMoreFollowers() {
+    }
 }

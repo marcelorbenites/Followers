@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.marcerlorbenites.followers.DependencyManager
 import com.marcerlorbenites.followers.FollowerManager
 import com.marcerlorbenites.followers.R
+import com.marcerlorbenites.followers.view.picasso.PicassoImageLoader
 import com.squareup.picasso.Picasso
 
 class FollowerActivity: AppCompatActivity(), FollowerListViewContainer {

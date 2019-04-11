@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.marcerlorbenites.followers.FollowerManager
 import com.marcerlorbenites.followers.Followers
 import com.marcerlorbenites.followers.R
@@ -25,7 +26,9 @@ class FollowerListFragment : Fragment() {
     private var followerManager: FollowerManager? = null
     private var imageLoader: ImageLoader? = null
     private var listener: StateListener<Followers>? = null
+    private var scrollListener: RecyclerView.OnScrollListener? = null
     private var adapter: FollowerListAdapter? = null
+    private var layoutManager: LinearLayoutManager? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -40,9 +43,31 @@ class FollowerListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         listener = object : StateListener<Followers> {
             override fun onStateUpdate(state: State<Followers>) {
-                if (state.name == State.Name.LOADED) {
-                    val followers = state.value!!
-                    adapter!!.setFollowers(followers.list)
+                when(state.name) {
+                    State.Name.IDLE, State.Name.LOADING -> {
+                        if (state.value == null) {
+                            showMainLoading()
+                            hideListLoading()
+                            hideFollowers()
+                        } else {
+                            showListLoading()
+                            hideMainLoading()
+                        }
+                    }
+                    State.Name.LOADED -> {
+                        hideMainLoading()
+                        hideListLoading()
+                        showFollowers(state.value!!)
+                    }
+                    State.Name.ERROR -> { }
+                }
+            }
+        }
+        scrollListener = object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!followerList.canScrollVertically(1)) {
+                    followerManager!!.loadMoreFollowers()
                 }
             }
         }
@@ -62,29 +87,35 @@ class FollowerListFragment : Fragment() {
             IMAGE_LOADER_REFERENCE,
             getString(R.string.fragment_follower_list_no_team)
         )
-        followerList.layoutManager = LinearLayoutManager(context)
+        layoutManager = LinearLayoutManager(context)
+        followerList.layoutManager = layoutManager
         followerList.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
         followerManager!!.registerListener(listener!!)
+        followerList.addOnScrollListener(scrollListener!!)
     }
 
     override fun onPause() {
         followerManager!!.unregisterListener(listener!!)
+        followerList.removeOnScrollListener(scrollListener!!)
         super.onPause()
     }
 
     override fun onDestroyView() {
         adapter = null
-        clearFindViewByIdCache()
+        layoutManager = null
         imageLoader!!.cancel(IMAGE_LOADER_REFERENCE)
+        followerList.removeOnScrollListener(scrollListener!!)
+        clearFindViewByIdCache()
         super.onDestroyView()
     }
 
     override fun onDestroy() {
         listener = null
+        scrollListener = null
         followerManager = null
         imageLoader = null
         super.onDestroy()
@@ -95,4 +126,30 @@ class FollowerListFragment : Fragment() {
         super.onDetach()
     }
 
+    private fun showMainLoading() {
+        mainLoading.visibility = View.VISIBLE
+    }
+
+    private fun hideMainLoading() {
+        mainLoading.visibility = View.GONE
+    }
+
+    private fun showListLoading() {
+        listLoading.visibility = View.VISIBLE
+    }
+
+    private fun hideListLoading() {
+        listLoading.visibility = View.GONE
+    }
+
+    private fun showFollowers(followers: Followers) {
+        followerList.visibility = View.VISIBLE
+        val viewsState = layoutManager!!.onSaveInstanceState()
+        adapter!!.setFollowers(followers.list)
+        layoutManager!!.onRestoreInstanceState(viewsState)
+    }
+
+    private fun hideFollowers() {
+        followerList.visibility = View.GONE
+    }
 }

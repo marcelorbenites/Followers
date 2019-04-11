@@ -22,7 +22,7 @@ class FollowerListFragmentTest {
     val rule: ActivityTestRule<TestActivity> = ActivityTestRule(TestActivity::class.java)
 
     @Test
-    fun `Given followers are loaded When view is resumed Then show followers`() {
+    fun `Given followers are loaded When view is resumed Then show followers And hide main loading`() {
 
         rule.activity.testFollowerManager = FakeFollowerManager(
             State(
@@ -57,5 +57,50 @@ class FollowerListFragmentTest {
         onView(withText("Ringo Starr")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(allOf(withParent(withChild(withText("Ringo Starr"))), withText("The Beatles F.C.")))
             .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+    }
+
+    @Test
+    fun `Given followers are loading And there are no followers When view is resumed Then show main loading`() {
+
+        rule.activity.testFollowerManager = FakeFollowerManager(State(State.Name.LOADING))
+        rule.activity.showFragment(FollowerListFragment())
+
+        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+    }
+
+    @Test
+    fun `Given followers are loading And there are followers When view is resumed Then show list loading`() {
+
+        rule.activity.testFollowerManager = FakeFollowerManager(
+            State(
+                State.Name.LOADING, Followers(
+                    listOf(
+                        Follower(
+                            "1",
+                            "John",
+                            "Lennon",
+                            "http://thebeatles.com/john",
+                            Club("The Beatles F.C.", "http://thebeatles.com/logo")
+                        ),
+                        Follower(
+                            "2",
+                            "Ringo",
+                            "Starr",
+                            "http://thebeatles.com/ringo",
+                            Club("The Beatles F.C.", "http://thebeatles.com/logo")
+                        )
+                    )
+                )
+            )
+        )
+        rule.activity.showFragment(FollowerListFragment())
+
+        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
     }
 }

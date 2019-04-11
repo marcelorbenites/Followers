@@ -25,4 +25,19 @@ class HttpFollowerService(
             return jsonConverter.parseFollowers(response.body()!!.string())
         }
     }
+
+    override fun getNextFollowers(lastFollowerId: String): List<Follower> {
+        val request = Request.Builder()
+            .url("${url}followers?current_follow_slug=$lastFollowerId")
+            .get()
+            .build()
+
+        val response = httpClient.newCall(request).execute()
+
+        if (!response.isSuccessful) {
+            throw IOException()
+        } else {
+            return jsonConverter.parseFollowers(response.body()!!.string())
+        }
+    }
 }

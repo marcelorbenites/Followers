@@ -68,6 +68,47 @@ class HttpFollowerServiceTest {
     }
 
     @Test
+    fun `Given there is internet connection When get next contacts is called Then Followers API is called with GET method and Follower id as parameter`() {
+        val server = MockWebServer()
+        server.start()
+        val baseUrl = server.url("/").toString()
+
+        val followerList = listOf(
+            Follower(
+                "3",
+                "George",
+                "Harrison",
+                "http://thebeatles.com/george",
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
+            ),
+            Follower(
+                "4",
+                "Paul",
+                "Mccartney",
+                "http://thebeatles.com/paul",
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
+
+            )
+        )
+
+        val httpClient = OkHttpClient()
+        val service = HttpFollowerService(
+            baseUrl,
+            httpClient,
+            FakeJsonConverter(followerList)
+        )
+
+        server.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
+
+        assertEquals(followerList, service.getNextFollowers("2"))
+
+        val request = server.takeRequest()
+
+        assertEquals("GET", request.method)
+        assertEquals("/followers?current_follow_slug=2", request.path)
+    }
+
+    @Test
     fun `Given a valid request When get contacts is called And a non successful response is received Then should raise an IO exception`() {
         val server = MockWebServer()
         server.start()
