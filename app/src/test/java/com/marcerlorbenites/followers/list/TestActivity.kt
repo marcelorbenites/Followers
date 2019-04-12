@@ -5,8 +5,9 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.marcerlorbenites.followers.*
+import com.marcerlorbenites.followers.detail.FollowerDetailContainer
 
-class TestActivity : AppCompatActivity(), FollowerListViewContainer {
+class TestActivity : AppCompatActivity(), FollowerListContainer, FollowerDetailContainer {
 
     var testFollowerManager: FollowerManager = FakeFollowerManager()
 
@@ -19,6 +20,8 @@ class TestActivity : AppCompatActivity(), FollowerListViewContainer {
     override val imageLoader: ImageLoader by lazy {
         testImageLoader
     }
+
+    override val navigator: Navigator = Navigator(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

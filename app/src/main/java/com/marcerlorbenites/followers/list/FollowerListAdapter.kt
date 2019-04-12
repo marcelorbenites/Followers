@@ -15,6 +15,8 @@ class FollowerListAdapter(
     private val items: MutableList<Follower> = mutableListOf()
 ) : RecyclerView.Adapter<FollowerViewHolder>() {
 
+    var clickListener: OnFollowerClickListener? = null
+
     override fun getItemViewType(position: Int) = R.layout.item_follower
 
     override fun getItemCount() = items.size
@@ -24,7 +26,8 @@ class FollowerListAdapter(
             inflater.inflate(viewType, parent, false),
             imageLoader,
             imageLoaderReference,
-            noClubText
+            noClubText,
+            clickListener
         )
     }
 
@@ -37,4 +40,9 @@ class FollowerListAdapter(
         items.addAll(followers)
         notifyDataSetChanged()
     }
+
+    interface OnFollowerClickListener {
+        fun onFollowerClick(follower: Follower)
+    }
 }
+

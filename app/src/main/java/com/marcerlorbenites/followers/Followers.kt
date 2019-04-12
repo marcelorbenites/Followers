@@ -5,4 +5,5 @@ data class Followers(
     val selectedFollower: Follower? = null
 ) {
     val last: Follower? = list.lastOrNull()
+    val followerSelected: Boolean = selectedFollower != null
 }

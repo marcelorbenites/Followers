@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/fragment_follower_detail_title"
+            android:id="@+id/toolbar"
+            app:navigationIcon="@drawable/ic_back_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            style="@style/TextAppearance.AppCompat.Large"
+            tools:text="John Lennon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/clubPicture"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"/>
+
+    <ImageView
+            android:scaleType="centerInside"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            tools:srcCompat="@mipmap/ic_launcher"
+            android:id="@+id/profilePicture"
+            app:layout_constraintStart_toEndOf="@+id/clubPicture"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+
+    <ImageView
+            android:scaleType="centerInside"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            tools:srcCompat="@mipmap/ic_launcher"
+            android:id="@+id/clubPicture"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/profilePicture"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginEnd="16dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,8 @@ class FollowerViewHolder(
     view: View,
     private val imageLoader: ImageLoader,
     private val imageLoaderReference: String,
-    private val noClubText: String
+    private val noClubText: String,
+    private val clickListener: FollowerListAdapter.OnFollowerClickListener?
 ) : RecyclerView.ViewHolder(view) {
 
     private val name = itemView.findViewById<TextView>(R.id.name)
@@ -20,6 +21,11 @@ class FollowerViewHolder(
     private val picture = itemView.findViewById<ImageView>(R.id.picture)
 
     fun setFollower(follower: Follower) {
+
+        itemView.setOnClickListener {
+            clickListener?.onFollowerClick(follower)
+        }
+
         name.text = follower.fullName
         imageLoader.load(picture, follower.picture, imageLoaderReference)
         clubName.text = if (follower.hasClub) {

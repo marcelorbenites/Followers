@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.marcerlorbenites.followers.FollowerManager
-import com.marcerlorbenites.followers.Followers
-import com.marcerlorbenites.followers.ImageLoader
-import com.marcerlorbenites.followers.R
+import com.marcerlorbenites.followers.*
 import com.marcerlorbenites.followers.state.State
 import com.marcerlorbenites.followers.state.StateListener
 import kotlinx.android.synthetic.*
@@ -24,21 +21,23 @@ class FollowerListFragment : Fragment() {
         const val IMAGE_LOADER_REFERENCE = "FollowerListFragment"
     }
 
-    private var container: FollowerListViewContainer? = null
+    private var container: FollowerListContainer? = null
     private var followerManager: FollowerManager? = null
+    private var navigator: Navigator? = null
     private var imageLoader: ImageLoader? = null
     private var listener: StateListener<Followers>? = null
     private var scrollListener: RecyclerView.OnScrollListener? = null
+    private var followerClickListener: FollowerListAdapter.OnFollowerClickListener? = null
     private var retryListener: View.OnClickListener? = null
     private var adapter: FollowerListAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is FollowerListViewContainer) {
+        if (context is FollowerListContainer) {
             container = context
         } else {
-            throw IllegalStateException("Context must implement ${FollowerListViewContainer::class.java.simpleName}")
+            throw IllegalStateException("Context must implement ${FollowerListContainer::class.java.simpleName}")
         }
     }
 
@@ -86,6 +85,13 @@ class FollowerListFragment : Fragment() {
             }
         }
 
+        followerClickListener = object : FollowerListAdapter.OnFollowerClickListener {
+            override fun onFollowerClick(follower: Follower) {
+                followerManager!!.selectFollower(follower.id)
+                navigator!!.navigateToFollowerDetailView()
+            }
+        }
+
         retryListener = View.OnClickListener { followerManager!!.loadFollowers() }
     }
 
@@ -96,6 +102,7 @@ class FollowerListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         followerManager = container!!.followerManager
+        navigator = container!!.navigator
         imageLoader = container!!.imageLoader
         adapter = FollowerListAdapter(
             LayoutInflater.from(context),
@@ -110,12 +117,14 @@ class FollowerListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        adapter!!.clickListener = followerClickListener
         followerManager!!.registerListener(listener!!)
         followerList.addOnScrollListener(scrollListener!!)
         retryButton.setOnClickListener(retryListener!!)
     }
 
     override fun onPause() {
+        adapter!!.clickListener = null
         followerManager!!.unregisterListener(listener!!)
         followerList.removeOnScrollListener(scrollListener!!)
         retryButton.setOnClickListener(null)
@@ -132,7 +141,9 @@ class FollowerListFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        navigator = null
         listener = null
+        followerClickListener = null
         scrollListener = null
         followerManager = null
         imageLoader = null
@@ -163,9 +174,7 @@ class FollowerListFragment : Fragment() {
 
     private fun showFollowers(followers: Followers) {
         followerList.visibility = View.VISIBLE
-        val viewsState = layoutManager!!.onSaveInstanceState()
         adapter!!.setFollowers(followers.list)
-        layoutManager!!.onRestoreInstanceState(viewsState)
     }
 
     private fun hideFollowers() {
@@ -187,6 +196,4 @@ class FollowerListFragment : Fragment() {
     private fun hideRetry() {
         retryButton.visibility = View.GONE
     }
-
-
 }
