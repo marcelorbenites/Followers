@@ -7,4 +7,5 @@ abstract class FollowerManager(currentState: State<Followers> = State(State.Name
     StateMachine<Followers>(currentState) {
     abstract fun setup()
     abstract fun loadMoreFollowers()
+    abstract fun loadFollowers()
 }

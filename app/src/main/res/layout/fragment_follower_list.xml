@@ -18,13 +18,14 @@
             android:id="@+id/followerList"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="0.0" app:layout_constraintBottom_toTopOf="@+id/listLoading"/>
 
     <ProgressBar android:layout_width="wrap_content"
-                 android:visibility="gone"
+                 android:visibility="visible"
                  android:layout_height="wrap_content"
                  android:id="@+id/mainLoading"
                  app:layout_constraintBottom_toBottomOf="parent"
@@ -42,5 +43,24 @@
                  app:layout_constraintStart_toStartOf="parent"
                  android:layout_marginBottom="16dp" app:layout_constraintTop_toBottomOf="@+id/followerList"
                  android:layout_marginTop="16dp"/>
+    <TextView
+            android:visibility="gone"
+            android:text="@string/fragment_follower_list_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:id="@+id/errorText" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+            android:visibility="gone"
+            android:text="@string/fragment_follower_list_retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/retryButton" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/errorText" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import com.marcerlorbenites.followers.state.StateListener
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_follower_list.*
 
+
 class FollowerListFragment : Fragment() {
 
     companion object {
@@ -27,6 +28,7 @@ class FollowerListFragment : Fragment() {
     private var imageLoader: ImageLoader? = null
     private var listener: StateListener<Followers>? = null
     private var scrollListener: RecyclerView.OnScrollListener? = null
+    private var retryListener: View.OnClickListener? = null
     private var adapter: FollowerListAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
@@ -43,7 +45,7 @@ class FollowerListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         listener = object : StateListener<Followers> {
             override fun onStateUpdate(state: State<Followers>) {
-                when(state.name) {
+                when (state.name) {
                     State.Name.IDLE, State.Name.LOADING -> {
                         if (state.value == null) {
                             showMainLoading()
@@ -53,24 +55,37 @@ class FollowerListFragment : Fragment() {
                             showListLoading()
                             hideMainLoading()
                         }
+                        hideError()
+                        hideRetry()
                     }
                     State.Name.LOADED -> {
                         hideMainLoading()
                         hideListLoading()
                         showFollowers(state.value!!)
+                        hideError()
+                        hideRetry()
                     }
-                    State.Name.ERROR -> { }
+                    State.Name.ERROR -> {
+                        showError()
+                        showRetry()
+                        hideMainLoading()
+                        hideListLoading()
+                        hideFollowers()
+                    }
                 }
             }
         }
-        scrollListener = object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
+        scrollListener = object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
                 if (!followerList.canScrollVertically(1)) {
                     followerManager!!.loadMoreFollowers()
                 }
             }
         }
+
+        retryListener = View.OnClickListener { followerManager!!.loadFollowers() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -96,11 +111,13 @@ class FollowerListFragment : Fragment() {
         super.onResume()
         followerManager!!.registerListener(listener!!)
         followerList.addOnScrollListener(scrollListener!!)
+        retryButton.setOnClickListener(retryListener!!)
     }
 
     override fun onPause() {
         followerManager!!.unregisterListener(listener!!)
         followerList.removeOnScrollListener(scrollListener!!)
+        retryButton.setOnClickListener(null)
         super.onPause()
     }
 
@@ -118,6 +135,7 @@ class FollowerListFragment : Fragment() {
         scrollListener = null
         followerManager = null
         imageLoader = null
+        retryListener = null
         super.onDestroy()
     }
 
@@ -152,4 +170,22 @@ class FollowerListFragment : Fragment() {
     private fun hideFollowers() {
         followerList.visibility = View.GONE
     }
+
+    private fun showError() {
+        errorText.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        errorText.visibility = View.GONE
+    }
+
+    private fun showRetry() {
+        retryButton.visibility = View.VISIBLE
+    }
+
+    private fun hideRetry() {
+        retryButton.visibility = View.GONE
+    }
+
+
 }

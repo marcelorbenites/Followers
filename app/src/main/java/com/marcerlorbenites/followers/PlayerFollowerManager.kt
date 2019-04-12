@@ -17,20 +17,24 @@ class PlayerFollowerManager(
         loadFollowers()
     }
 
-    private fun loadFollowers() {
-        moveToLoading()
-        disposable.add(
-            Single.fromCallable { Followers(service.getFollowers()) }
-                .subscribeOn(scheduler)
-                .observeOn(publishScheduler)
-                .subscribe(
-                    { followers ->
-                        moveToLoaded(followers)
-                    },
-                    {
-                        moveToError()
-                    }
-                ))
+    override fun loadFollowers() {
+        if (currentState.name != State.Name.LOADING) {
+            moveToLoading()
+            disposable.add(
+                Single.fromCallable { Followers(service.getFollowers()) }
+                    .subscribeOn(scheduler)
+                    .observeOn(publishScheduler)
+                    .subscribe(
+                        { followers ->
+                            moveToLoaded(followers)
+                        },
+                        {
+                            moveToError()
+                        }
+                    ))
+        } else {
+            moveToLoading()
+        }
     }
 
     override fun loadMoreFollowers() {
