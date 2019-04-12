@@ -1,12 +1,10 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers.list
 
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.marcerlorbenites.followers.FakeFollowerManager
-import com.marcerlorbenites.followers.FollowerManager
-import com.marcerlorbenites.followers.R
+import com.marcerlorbenites.followers.*
 
 class TestActivity : AppCompatActivity(), FollowerListViewContainer {
 

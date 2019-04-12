@@ -1,11 +1,10 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.marcerlorbenites.followers.DependencyManager
-import com.marcerlorbenites.followers.FollowerManager
-import com.marcerlorbenites.followers.R
-import com.marcerlorbenites.followers.view.picasso.PicassoImageLoader
+import com.marcerlorbenites.followers.list.FollowerListViewContainer
+import com.marcerlorbenites.followers.list.Navigator
+import com.marcerlorbenites.followers.picasso.PicassoImageLoader
 import com.squareup.picasso.Picasso
 
 class FollowerActivity: AppCompatActivity(), FollowerListViewContainer {

@@ -11,4 +11,6 @@ class FakeFollowerManager(
     }
     override fun loadFollowers() {
     }
+    override fun selectFollower(followerId: String) {
+    }
 }

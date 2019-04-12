@@ -1,4 +1,4 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers.list
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches

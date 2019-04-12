@@ -1,4 +1,4 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers
 
 import android.widget.ImageView
 

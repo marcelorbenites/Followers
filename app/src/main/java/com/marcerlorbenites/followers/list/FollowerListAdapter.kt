@@ -1,9 +1,10 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.marcerlorbenites.followers.Follower
+import com.marcerlorbenites.followers.ImageLoader
 import com.marcerlorbenites.followers.R
 
 class FollowerListAdapter(

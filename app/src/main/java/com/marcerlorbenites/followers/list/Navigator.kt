@@ -1,4 +1,4 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers.list
 
 import androidx.fragment.app.FragmentManager
 import com.marcerlorbenites.followers.R

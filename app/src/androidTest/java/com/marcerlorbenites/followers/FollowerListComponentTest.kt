@@ -14,7 +14,6 @@ import androidx.test.uiautomator.UiScrollable
 import androidx.test.uiautomator.UiSelector
 import com.marcerlorbenites.followers.AndroidTestHelper.Companion.launchActivity
 import com.marcerlorbenites.followers.ViewMatchers.Companion.withHolderView
-import com.marcerlorbenites.followers.view.FollowerActivity
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.Matchers.allOf

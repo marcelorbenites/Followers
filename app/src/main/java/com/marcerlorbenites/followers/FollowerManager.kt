@@ -8,4 +8,5 @@ abstract class FollowerManager(currentState: State<Followers> = State(State.Name
     abstract fun setup()
     abstract fun loadMoreFollowers()
     abstract fun loadFollowers()
+    abstract fun selectFollower(followerId: String)
 }

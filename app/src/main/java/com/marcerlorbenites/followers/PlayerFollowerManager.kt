@@ -33,7 +33,7 @@ class PlayerFollowerManager(
                         }
                     ))
         } else {
-            moveToLoading()
+            emitCurrentState()
         }
     }
 
@@ -64,7 +64,18 @@ class PlayerFollowerManager(
                         }
                     ))
         } else {
-            moveToLoading()
+            emitCurrentState()
+        }
+    }
+
+    override fun selectFollower(followerId: String) {
+        if (currentState.name == State.Name.LOADED) {
+            val followers = currentState.value!!
+            moveToLoaded(followers.copy(selectedFollower = followers.list.find { follower ->
+                follower.id == followerId
+            }))
+        } else {
+            emitCurrentState()
         }
     }
 }

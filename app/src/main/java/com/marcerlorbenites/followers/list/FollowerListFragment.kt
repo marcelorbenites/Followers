@@ -1,4 +1,4 @@
-package com.marcerlorbenites.followers.view
+package com.marcerlorbenites.followers.list
 
 import android.content.Context
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.marcerlorbenites.followers.FollowerManager
 import com.marcerlorbenites.followers.Followers
+import com.marcerlorbenites.followers.ImageLoader
 import com.marcerlorbenites.followers.R
 import com.marcerlorbenites.followers.state.State
 import com.marcerlorbenites.followers.state.StateListener

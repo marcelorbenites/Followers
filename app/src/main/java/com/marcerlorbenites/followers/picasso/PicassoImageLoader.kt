@@ -1,7 +1,7 @@
-package com.marcerlorbenites.followers.view.picasso
+package com.marcerlorbenites.followers.picasso
 
 import android.widget.ImageView
-import com.marcerlorbenites.followers.view.ImageLoader
+import com.marcerlorbenites.followers.ImageLoader
 import com.squareup.picasso.Picasso
 
 class PicassoImageLoader(private val picasso: Picasso): ImageLoader {
