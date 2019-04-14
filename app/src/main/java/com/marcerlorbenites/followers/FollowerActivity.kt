@@ -14,6 +14,10 @@ class FollowerActivity : AppCompatActivity(), FollowerListContainer, FollowerDet
         (application as DependencyManager).followerManager
     }
 
+    override val followersLoadOffset: Int by lazy {
+        (application as DependencyManager).followersLoadOffset
+    }
+
     override val imageLoader: ImageLoader by lazy {
         PicassoImageLoader(Picasso.get())
     }

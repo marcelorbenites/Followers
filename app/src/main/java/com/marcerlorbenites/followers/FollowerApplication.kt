@@ -17,6 +17,10 @@ class FollowerApplication : Application(), DependencyManager {
         )
     }
 
+    override val followersLoadOffset: Int by lazy {
+        BuildConfig.FOLLOWERS_LOAD_OFFSET
+    }
+
     override fun onCreate() {
         super.onCreate()
         followerManager.setup()

@@ -7,11 +7,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToHolder
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiScrollable
-import androidx.test.uiautomator.UiSelector
 import com.marcerlorbenites.followers.AndroidTestHelper.Companion.launchActivity
 import com.marcerlorbenites.followers.ViewMatchers.Companion.withHolderView
 import okhttp3.mockwebserver.MockResponse
@@ -37,7 +33,8 @@ class FollowerListComponentTest {
 
         launchActivity(
             rule,
-            server.url("/").toString()
+            server.url("/").toString(),
+            5
         )
 
         onView(withText("John Lennon")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
@@ -52,7 +49,7 @@ class FollowerListComponentTest {
     }
 
     @Test
-    fun shouldDisplayMoreFollowersWhenScrollToTheEndOfList() {
+    fun shouldDisplayMoreFollowersWhenScrollToItemOffset() {
         val server = MockWebServer()
         server.start()
 
@@ -61,11 +58,12 @@ class FollowerListComponentTest {
 
         launchActivity(
             rule,
-            server.url("/").toString()
+            server.url("/").toString(),
+            5
         )
 
-        UiDevice.getInstance(getInstrumentation())
-        UiScrollable(UiSelector().scrollable(true)).scrollToEnd(5)
+        onView(withId(R.id.followerList))
+            .perform(scrollToHolder(withHolderView(hasDescendant(withText("Abdal-Malik Kassim  Madi")))))
 
         onView(withId(R.id.followerList))
             .perform(scrollToHolder(withHolderView(hasDescendant(withText("Abdelaat Ifkharne")))))
@@ -83,7 +81,8 @@ class FollowerListComponentTest {
 
         launchActivity(
             rule,
-            server.url("/").toString()
+            server.url("/").toString(),
+            5
         )
         onView(withText(R.string.fragment_follower_list_error)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.retryButton)).perform(click())

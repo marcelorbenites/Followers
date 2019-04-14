@@ -30,11 +30,12 @@ class FollowerDetailComponentTest {
 
         launchActivity(
             rule,
-            server.url("/").toString()
+            server.url("/").toString(),
+            5
         )
 
         onView(withChild(withText("John Lennon"))).perform(click())
-        onView(withText("Follower")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withText(R.string.fragment_follower_detail_title)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withText("John Lennon")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
 
         server.shutdown()

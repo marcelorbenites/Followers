@@ -19,7 +19,8 @@ class AndroidTestHelper {
 
         fun <T : Activity> launchActivity(
             rule: ActivityTestRule<T>,
-            baseUrl: String
+            baseUrl: String,
+            followersLoadOffset: Int
         ) {
             val application = ApplicationProvider.getApplicationContext<FollowerApplication>()
 
@@ -31,6 +32,7 @@ class AndroidTestHelper {
             )
 
             setLazyDependency(application, "followerManager", testFollowerManager)
+            setLazyDependency(application, "followersLoadOffset", followersLoadOffset)
 
             enableNetworkOnMainThread()
 

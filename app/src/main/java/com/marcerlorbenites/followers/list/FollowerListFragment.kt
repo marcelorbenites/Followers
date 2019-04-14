@@ -23,6 +23,7 @@ class FollowerListFragment : Fragment() {
 
     private var container: FollowerListContainer? = null
     private var followerManager: FollowerManager? = null
+    private var followersLoadOffset: Int? = null
     private var navigator: Navigator? = null
     private var imageLoader: ImageLoader? = null
     private var listener: StateListener<Followers>? = null
@@ -75,12 +76,21 @@ class FollowerListFragment : Fragment() {
                 }
             }
         }
+
         scrollListener = object : RecyclerView.OnScrollListener() {
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!followerList.canScrollVertically(1)) {
-                    followerManager!!.loadMoreFollowers()
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val canScroll = recyclerView.canScrollVertically(1)
+                val itemOffset = followersLoadOffset!!
+                val lastItemPosition = adapter!!.itemCount - 1
+                val lastVisibleItemPosition = layoutManager!!.findLastVisibleItemPosition()
+
+                if (canScroll) {
+                    if ((lastItemPosition - lastVisibleItemPosition) <= itemOffset) {
+                        followerManager!!.loadMoreFollowers()
+                    }
                 }
             }
         }
@@ -111,6 +121,7 @@ class FollowerListFragment : Fragment() {
             getString(R.string.fragment_follower_list_no_team)
         )
         layoutManager = LinearLayoutManager(context)
+        followersLoadOffset = container!!.followersLoadOffset
         followerList.layoutManager = layoutManager
         followerList.adapter = adapter
     }
@@ -134,6 +145,7 @@ class FollowerListFragment : Fragment() {
     override fun onDestroyView() {
         adapter = null
         layoutManager = null
+        followersLoadOffset = null
         imageLoader!!.cancel(IMAGE_LOADER_REFERENCE)
         followerList.removeOnScrollListener(scrollListener!!)
         clearFindViewByIdCache()

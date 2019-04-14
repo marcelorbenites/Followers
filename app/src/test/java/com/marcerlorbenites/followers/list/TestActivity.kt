@@ -13,12 +13,18 @@ class TestActivity : AppCompatActivity(), FollowerListContainer, FollowerDetailC
 
     var testImageLoader: ImageLoader = FakeImageLoader()
 
+    var testFollowersLoadOffset: Int = 10
+
     override val followerManager: FollowerManager by lazy {
         testFollowerManager
     }
 
     override val imageLoader: ImageLoader by lazy {
         testImageLoader
+    }
+
+    override val followersLoadOffset: Int by lazy {
+        testFollowersLoadOffset
     }
 
     override val navigator: Navigator = Navigator(supportFragmentManager)

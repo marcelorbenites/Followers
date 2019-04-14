@@ -7,4 +7,5 @@ interface FollowerListContainer {
     val followerManager: FollowerManager
     val imageLoader: ImageLoader
     val navigator: Navigator
+    val followersLoadOffset: Int
 }

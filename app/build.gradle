@@ -14,6 +14,7 @@ android {
         versionName versionNameApp
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "FOLLOWER_BASE_URL", "\"${project.FOLLOWER_BASE_URL}\""
+        buildConfigField "int", "FOLLOWERS_LOAD_OFFSET", project.FOLLOWERS_LOAD_OFFSET
         vectorDrawables.useSupportLibrary = true
     }
 
