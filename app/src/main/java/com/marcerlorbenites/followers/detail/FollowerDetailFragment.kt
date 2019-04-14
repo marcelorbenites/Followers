@@ -44,6 +44,8 @@ class FollowerDetailFragment : Fragment() {
                     val followers = state.value!!
                     if (followers.followerSelected) {
                         showFollower(followers.selectedFollower!!)
+                    } else {
+                        navigator!!.navigateBack()
                     }
                 }
             }

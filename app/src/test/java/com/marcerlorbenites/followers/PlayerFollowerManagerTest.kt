@@ -196,18 +196,16 @@ class PlayerFollowerManagerTest {
     }
 
     @Test
-    fun `Given loaded list of followers When select is called with id Then emit the follower with id as selected`() {
-
-        val selectedFollower = Follower(
-            "1",
-            "John",
-            "Lennon",
-            "http://thebeatles.com/john",
-            Club("The Beatles F.C.", "http://thebeatles.com/logo")
-        )
+    fun `Given loaded list of followers When select is called with id Then emit the followers selected follower id`() {
 
         val list = listOf(
-            selectedFollower,
+            Follower(
+                "1",
+                "John",
+                "Lennon",
+                "http://thebeatles.com/john",
+                Club("The Beatles F.C.", "http://thebeatles.com/logo")
+            ),
             Follower(
                 "2",
                 "Ringo",
@@ -228,24 +226,7 @@ class PlayerFollowerManagerTest {
         manager.selectFollower("1")
 
         verify {
-            listenerMock.onStateUpdate(State(State.Name.LOADED, Followers(list, selectedFollower)))
-        }
-    }
-
-    @Test
-    fun `Given an idle state When select is called with id Then emit error state`() {
-
-        val manager = PlayerFollowerManager(
-            FakeFollowerService(),
-            FakeDispatcher()
-        )
-
-        val listenerMock = mockk<StateListener<Followers>>(relaxed = true)
-        manager.registerListener(listenerMock)
-        manager.selectFollower("1")
-
-        verify {
-            listenerMock.onStateUpdate(State(State.Name.ERROR))
+            listenerMock.onStateUpdate(State(State.Name.LOADED, Followers(list, "1")))
         }
     }
 }

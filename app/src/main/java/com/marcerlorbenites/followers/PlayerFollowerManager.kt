@@ -33,14 +33,8 @@ class PlayerFollowerManager(
     }
 
     override fun selectFollower(followerId: String) {
-
-        if (currentState.name != State.Name.LOADED) {
-            moveToError()
-        }
-
         moveToLoaded {
-            val followers = currentState.value!!
-            followers.copy(selectedFollower = followers.findFollower(followerId))
+            currentState.value!!.copy(selectedFollowerId = followerId)
         }
     }
 }
