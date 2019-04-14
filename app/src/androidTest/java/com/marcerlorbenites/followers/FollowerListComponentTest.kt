@@ -34,7 +34,8 @@ class FollowerListComponentTest {
         launchActivity(
             rule,
             server.url("/").toString(),
-            5
+            5,
+            FakeImageLoader()
         )
 
         onView(withText("John Lennon")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
@@ -59,7 +60,8 @@ class FollowerListComponentTest {
         launchActivity(
             rule,
             server.url("/").toString(),
-            5
+            5,
+            FakeImageLoader()
         )
 
         onView(withId(R.id.followerList))
@@ -82,8 +84,10 @@ class FollowerListComponentTest {
         launchActivity(
             rule,
             server.url("/").toString(),
-            5
+            5,
+            FakeImageLoader()
         )
+
         onView(withText(R.string.fragment_follower_list_error)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.retryButton)).perform(click())
 

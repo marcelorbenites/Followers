@@ -31,7 +31,8 @@ class FollowerDetailComponentTest {
         launchActivity(
             rule,
             server.url("/").toString(),
-            5
+            5,
+            FakeImageLoader()
         )
 
         onView(withChild(withText("John Lennon"))).perform(click())

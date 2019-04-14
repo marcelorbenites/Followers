@@ -20,26 +20,29 @@ class AndroidTestHelper {
         fun <T : Activity> launchActivity(
             rule: ActivityTestRule<T>,
             baseUrl: String,
-            followersLoadOffset: Int
+            followersLoadOffset: Int,
+            imageLoader: ImageLoader
         ) {
             val application = ApplicationProvider.getApplicationContext<FollowerApplication>()
 
             val mainThreadScheduler = AndroidSchedulers.mainThread()
-            val testFollowerManager = PlayerFollowerManager(
+
+            val followerManager = PlayerFollowerManager(
                 HttpFollowerService(baseUrl, OkHttpClient(), JsonObjectConverter()),
                 mainThreadScheduler,
                 mainThreadScheduler
             )
 
-            setLazyDependency(application, "followerManager", testFollowerManager)
+            setLazyDependency(application, "followerManager", followerManager)
             setLazyDependency(application, "followersLoadOffset", followersLoadOffset)
+            setLazyDependency(application, "imageLoader", imageLoader)
 
             enableNetworkOnMainThread()
 
             rule.launchActivity(Intent())
 
             onIdle {
-                testFollowerManager.setup()
+                followerManager.setup()
             }
         }
 

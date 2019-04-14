@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.marcerlorbenites.followers.detail.FollowerDetailContainer
 import com.marcerlorbenites.followers.list.FollowerListContainer
 import com.marcerlorbenites.followers.list.Navigator
-import com.marcerlorbenites.followers.picasso.PicassoImageLoader
-import com.squareup.picasso.Picasso
 
 class FollowerActivity : AppCompatActivity(), FollowerListContainer, FollowerDetailContainer {
 
@@ -19,7 +17,7 @@ class FollowerActivity : AppCompatActivity(), FollowerListContainer, FollowerDet
     }
 
     override val imageLoader: ImageLoader by lazy {
-        PicassoImageLoader(Picasso.get())
+        (application as DependencyManager).imageLoader
     }
 
     override val navigator: Navigator by lazy {
