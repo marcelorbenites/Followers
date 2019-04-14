@@ -1,7 +1,8 @@
 package com.marcerlorbenites.followers.state
 
 abstract class StateMachine<T>(
-    protected var currentState: State<T>,
+    private val dispatcher: Dispatcher<T>,
+    protected var currentState: State<T> = State(State.Name.IDLE),
     private val listeners: MutableList<StateListener<T>> = mutableListOf()
 ) {
 
@@ -14,44 +15,34 @@ abstract class StateMachine<T>(
         this.listeners.remove(listener)
     }
 
-    fun moveToLoading(value: T? = null) {
-        updateState(
-            State(
-                State.Name.LOADING,
-                value ?: currentState.value
-            )
-        )
+    fun moveToLoaded(function: () -> T) {
+        if (currentState.name != State.Name.LOADING) {
+            updateState(State(State.Name.LOADING, currentState.value))
+            dispatcher.dispatch(function, { value ->
+                updateState(State(State.Name.LOADED, value))
+            }, {
+                moveToError()
+            })
+        } else {
+            updateState(currentState)
+        }
     }
 
-    fun moveToLoaded(value: T? = null) {
-        updateState(
-            State(
-                State.Name.LOADED,
-                value ?: currentState.value
-            )
-        )
+    fun moveToIdle(function: () -> Unit) {
+        if (currentState.name != State.Name.IDLE) {
+            updateState(State(State.Name.LOADING, currentState.value))
+            dispatcher.dispatch(function, {
+                updateState(State(State.Name.IDLE, currentState.value))
+            }, {
+                moveToError()
+            })
+        } else {
+            updateState(currentState)
+        }
     }
 
     fun moveToError() {
-        updateState(
-            State(
-                State.Name.ERROR,
-                currentState.value
-            )
-        )
-    }
-
-    fun moveToIdle() {
-        updateState(
-            State(
-                State.Name.IDLE,
-                currentState.value
-            )
-        )
-    }
-
-    fun emitCurrentState() {
-        updateState(currentState)
+        updateState(State(State.Name.ERROR, currentState.value))
     }
 
     private fun updateState(state: State<T>) {

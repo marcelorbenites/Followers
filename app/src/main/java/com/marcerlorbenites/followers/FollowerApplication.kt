@@ -4,6 +4,7 @@ import android.app.Application
 import com.marcerlorbenites.followers.http.HttpFollowerService
 import com.marcerlorbenites.followers.http.JsonObjectConverter
 import com.marcerlorbenites.followers.picasso.PicassoImageLoader
+import com.marcerlorbenites.followers.rx.RxJavaDispatcher
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,8 +15,7 @@ class FollowerApplication : Application(), DependencyManager {
     override val followerManager: FollowerManager by lazy {
         PlayerFollowerManager(
             HttpFollowerService(BuildConfig.FOLLOWER_BASE_URL, OkHttpClient(), JsonObjectConverter()),
-            Schedulers.io(),
-            AndroidSchedulers.mainThread()
+            RxJavaDispatcher(Schedulers.io(), AndroidSchedulers.mainThread())
         )
     }
 

@@ -6,4 +6,10 @@ data class Followers(
 ) {
     val last: Follower? = list.lastOrNull()
     val followerSelected: Boolean = selectedFollower != null
+
+    fun findFollower(followerId: String): Follower {
+        return list.find { follower ->
+            follower.id == followerId
+        } ?: throw IllegalStateException("Follower with id $followerId not found.")
+    }
 }

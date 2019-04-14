@@ -11,6 +11,7 @@ import androidx.test.espresso.Espresso.onIdle
 import androidx.test.rule.ActivityTestRule
 import com.marcerlorbenites.followers.http.HttpFollowerService
 import com.marcerlorbenites.followers.http.JsonObjectConverter
+import com.marcerlorbenites.followers.rx.RxJavaDispatcher
 import io.reactivex.android.schedulers.AndroidSchedulers
 import okhttp3.OkHttpClient
 
@@ -29,8 +30,7 @@ class AndroidTestHelper {
 
             val followerManager = PlayerFollowerManager(
                 HttpFollowerService(baseUrl, OkHttpClient(), JsonObjectConverter()),
-                mainThreadScheduler,
-                mainThreadScheduler
+                RxJavaDispatcher(mainThreadScheduler, mainThreadScheduler)
             )
 
             setLazyDependency(application, "followerManager", followerManager)

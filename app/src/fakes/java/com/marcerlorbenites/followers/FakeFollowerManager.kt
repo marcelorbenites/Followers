@@ -4,13 +4,16 @@ import com.marcerlorbenites.followers.state.State
 
 class FakeFollowerManager(
     currentState: State<Followers> = State(State.Name.IDLE)
-) : FollowerManager(currentState) {
+) : FollowerManager(FakeDispatcher(), currentState) {
     override fun setup() {
     }
+
     override fun loadMoreFollowers() {
     }
+
     override fun loadFollowers() {
     }
+
     override fun selectFollower(followerId: String) {
     }
 }

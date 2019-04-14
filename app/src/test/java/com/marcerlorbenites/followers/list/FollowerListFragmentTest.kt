@@ -66,7 +66,9 @@ class FollowerListFragmentTest {
     @Test
     fun `Given followers are loading And there are no followers When view is resumed Then show main loading`() {
 
-        rule.activity.testFollowerManager = FakeFollowerManager(State(State.Name.LOADING))
+        rule.activity.testFollowerManager = FakeFollowerManager(
+            State(State.Name.LOADING)
+        )
         rule.activity.showFragment(FollowerListFragment())
 
         onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
@@ -112,7 +114,9 @@ class FollowerListFragmentTest {
     @Test
     fun `Given an error loading followers When view is resumed Then show error And retry button`() {
 
-        rule.activity.testFollowerManager = FakeFollowerManager(State(State.Name.ERROR))
+        rule.activity.testFollowerManager = FakeFollowerManager(
+            State(State.Name.ERROR)
+        )
         rule.activity.showFragment(FollowerListFragment())
 
         onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
