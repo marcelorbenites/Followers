@@ -1,20 +1,20 @@
-package com.marcerlorbenites.followers.http
+package com.marcerlorbenites.followers
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.IOException
 
-class HttpErrorTest {
+class ServiceErrorTest {
 
     @Test
     fun `Given an IO exception When is network is checked Then return true`() {
-        val error = HttpError(IOException())
+        val error = ServiceError(IOException())
         assertEquals(true, error.isNetwork())
     }
 
     @Test
     fun `Given an illegal state exception When is network is checked Then return false`() {
-        val error = HttpError(IllegalStateException())
+        val error = ServiceError(IllegalStateException())
         assertEquals(false, error.isNetwork())
     }
 }
