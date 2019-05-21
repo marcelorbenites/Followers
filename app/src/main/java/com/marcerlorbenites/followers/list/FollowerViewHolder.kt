@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.marcerlorbenites.followers.Follower
 import com.marcerlorbenites.followers.ImageLoader
 import com.marcerlorbenites.followers.R
 
@@ -12,7 +11,6 @@ class FollowerViewHolder(
     view: View,
     private val imageLoader: ImageLoader,
     private val imageLoaderReference: String,
-    private val noClubText: String,
     private val clickListener: FollowerListAdapter.OnFollowerClickListener?
 ) : RecyclerView.ViewHolder(view) {
 
@@ -20,18 +18,14 @@ class FollowerViewHolder(
     private val clubName = itemView.findViewById<TextView>(R.id.clubName)
     private val picture = itemView.findViewById<ImageView>(R.id.picture)
 
-    fun setFollower(follower: Follower) {
+    fun setFollower(followerItem: FollowerItemViewModel) {
 
         itemView.setOnClickListener {
-            clickListener?.onFollowerClick(follower)
+            clickListener?.onFollowerClick(followerItem)
         }
 
-        name.text = follower.fullName
-        imageLoader.load(picture, follower.picture, imageLoaderReference)
-        clubName.text = if (follower.hasClub) {
-            follower.club!!.name
-        } else {
-            noClubText
-        }
+        name.text = followerItem.fullName
+        imageLoader.load(picture, followerItem.picture, imageLoaderReference)
+        clubName.text = followerItem.clubName
     }
 }

@@ -3,7 +3,6 @@ package com.marcerlorbenites.followers.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.marcerlorbenites.followers.Follower
 import com.marcerlorbenites.followers.ImageLoader
 import com.marcerlorbenites.followers.R
 
@@ -11,8 +10,7 @@ class FollowerListAdapter(
     private val inflater: LayoutInflater,
     private val imageLoader: ImageLoader,
     private val imageLoaderReference: String,
-    private val noClubText: String,
-    private val items: MutableList<Follower> = mutableListOf()
+    private val items: MutableList<FollowerItemViewModel> = mutableListOf()
 ) : RecyclerView.Adapter<FollowerViewHolder>() {
 
     var clickListener: OnFollowerClickListener? = null
@@ -26,7 +24,6 @@ class FollowerListAdapter(
             inflater.inflate(viewType, parent, false),
             imageLoader,
             imageLoaderReference,
-            noClubText,
             clickListener
         )
     }
@@ -35,14 +32,14 @@ class FollowerListAdapter(
         holder.setFollower(items[position])
     }
 
-    fun setFollowers(followers: List<Follower>) {
+    fun setFollowers(followerItems: List<FollowerItemViewModel>) {
         items.clear()
-        items.addAll(followers)
+        items.addAll(followerItems)
         notifyDataSetChanged()
     }
 
     interface OnFollowerClickListener {
-        fun onFollowerClick(follower: Follower)
+        fun onFollowerClick(followerItem: FollowerItemViewModel)
     }
 }
 

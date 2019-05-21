@@ -8,27 +8,63 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.marcerlorbenites.followers.*
-import com.marcerlorbenites.followers.state.State
-import com.marcerlorbenites.followers.state.StateListener
+import com.marcerlorbenites.followers.R
 import kotlinx.android.synthetic.main.fragment_follower_list.*
 
 
-class FollowerListFragment : Fragment() {
+class FollowerListFragment : Fragment(), FollowerListView {
 
     companion object {
         const val IMAGE_LOADER_REFERENCE = "FollowerListFragment"
     }
 
+    private val followerManager by lazy {
+        container!!.followerManager
+    }
+
+    private val navigator by lazy {
+        container!!.navigator
+    }
+
+    private val imageLoader by lazy {
+        container!!.imageLoader
+    }
+
+    private val presenter by lazy {
+        FollowerListPresenter(this, getString(R.string.fragment_follower_list_no_team))
+    }
+
+    private val scrollController by lazy {
+        container!!.scrollController
+    }
+
+    private val scrollListener by lazy {
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                scrollController.onScroll(
+                    recyclerView.canScrollVertically(1),
+                    adapter!!.itemCount,
+                    layoutManager!!.findLastVisibleItemPosition()
+                )
+            }
+        }
+    }
+
+    private val selectListener by lazy {
+        object : FollowerListAdapter.OnFollowerClickListener {
+            override fun onFollowerClick(followerItem: FollowerItemViewModel) {
+                followerManager.selectFollower(followerItem.id)
+                navigator.navigateToFollowerDetailView()
+            }
+        }
+    }
+
+    private val retryListener by lazy {
+        View.OnClickListener { followerManager.loadFollowers() }
+    }
+
     private var container: FollowerListContainer? = null
-    private var followerManager: FollowerManager? = null
-    private var followersLoadOffset: Int? = null
-    private var navigator: Navigator? = null
-    private var imageLoader: ImageLoader? = null
-    private var listener: StateListener<Followers, Error>? = null
-    private var scrollListener: RecyclerView.OnScrollListener? = null
-    private var followerClickListener: FollowerListAdapter.OnFollowerClickListener? = null
-    private var retryListener: View.OnClickListener? = null
     private var adapter: FollowerListAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
@@ -41,109 +77,34 @@ class FollowerListFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        listener = object : StateListener<Followers, Error> {
-            override fun onStateUpdate(state: State<Followers, Error>) {
-                when (state.name) {
-                    State.Name.IDLE, State.Name.LOADING -> {
-                        if (state.value == null) {
-                            showMainLoading()
-                            hideListLoading()
-                            hideFollowers()
-                        } else {
-                            showListLoading()
-                            hideMainLoading()
-                        }
-                        hideError()
-                        hideRetry()
-                    }
-                    State.Name.LOADED -> {
-                        hideMainLoading()
-                        hideListLoading()
-                        showFollowers(state.value!!)
-                        hideError()
-                        hideRetry()
-                    }
-                    State.Name.ERROR -> {
-
-                        val error = state.error!!
-
-                        if (error.isNetwork()) {
-                            showNetworkError()
-                        } else {
-                            showUnknownError()
-                        }
-                        showRetry()
-                        hideMainLoading()
-                        hideListLoading()
-                        hideFollowers()
-                    }
-                }
-            }
-        }
-
-        scrollListener = object : RecyclerView.OnScrollListener() {
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val canScroll = recyclerView.canScrollVertically(1)
-                val itemOffset = followersLoadOffset!!
-                val lastItemPosition = adapter!!.itemCount - 1
-                val lastVisibleItemPosition = layoutManager!!.findLastVisibleItemPosition()
-
-                if (canScroll) {
-                    if ((lastItemPosition - lastVisibleItemPosition) <= itemOffset) {
-                        followerManager!!.loadMoreFollowers()
-                    }
-                }
-            }
-        }
-
-        followerClickListener = object : FollowerListAdapter.OnFollowerClickListener {
-            override fun onFollowerClick(follower: Follower) {
-                followerManager!!.selectFollower(follower.id)
-                navigator!!.navigateToFollowerDetailView()
-            }
-        }
-
-        retryListener = View.OnClickListener { followerManager!!.loadFollowers() }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_follower_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        followerManager = container!!.followerManager
-        navigator = container!!.navigator
-        imageLoader = container!!.imageLoader
         adapter = FollowerListAdapter(
             LayoutInflater.from(context),
-            imageLoader!!,
-            IMAGE_LOADER_REFERENCE,
-            getString(R.string.fragment_follower_list_no_team)
+            imageLoader,
+            IMAGE_LOADER_REFERENCE
         )
         layoutManager = LinearLayoutManager(context)
-        followersLoadOffset = container!!.followersLoadOffset
         followerList.layoutManager = layoutManager
         followerList.adapter = adapter
     }
 
     override fun onResume() {
         super.onResume()
-        adapter!!.clickListener = followerClickListener
-        followerManager!!.registerListener(listener!!)
-        followerList.addOnScrollListener(scrollListener!!)
-        retryButton.setOnClickListener(retryListener!!)
+        adapter!!.clickListener = selectListener
+        followerManager.registerListener(presenter)
+        followerList.addOnScrollListener(scrollListener)
+        retryButton.setOnClickListener(retryListener)
     }
 
     override fun onPause() {
         adapter!!.clickListener = null
-        followerManager!!.unregisterListener(listener!!)
-        followerList.removeOnScrollListener(scrollListener!!)
+        followerManager.unregisterListener(presenter)
+        followerList.removeOnScrollListener(scrollListener)
         retryButton.setOnClickListener(null)
         super.onPause()
     }
@@ -151,20 +112,8 @@ class FollowerListFragment : Fragment() {
     override fun onDestroyView() {
         adapter = null
         layoutManager = null
-        followersLoadOffset = null
-        imageLoader!!.cancel(IMAGE_LOADER_REFERENCE)
+        imageLoader.cancel(IMAGE_LOADER_REFERENCE)
         super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        navigator = null
-        listener = null
-        followerClickListener = null
-        scrollListener = null
-        followerManager = null
-        imageLoader = null
-        retryListener = null
-        super.onDestroy()
     }
 
     override fun onDetach() {
@@ -172,50 +121,50 @@ class FollowerListFragment : Fragment() {
         super.onDetach()
     }
 
-    private fun showMainLoading() {
+    override fun showMainLoading() {
         mainLoading.visibility = View.VISIBLE
     }
 
-    private fun hideMainLoading() {
+    override fun hideMainLoading() {
         mainLoading.visibility = View.GONE
     }
 
-    private fun showListLoading() {
+    override fun showListLoading() {
         listLoading.visibility = View.VISIBLE
     }
 
-    private fun hideListLoading() {
+    override fun hideListLoading() {
         listLoading.visibility = View.GONE
     }
 
-    private fun showFollowers(followers: Followers) {
-        followerList.visibility = View.VISIBLE
-        adapter!!.setFollowers(followers.list)
+    override fun showFollowers(followerList: FollowerListViewModel) {
+        this.followerList.visibility = View.VISIBLE
+        adapter!!.setFollowers(followerList.list)
     }
 
-    private fun hideFollowers() {
+    override fun hideFollowers() {
         followerList.visibility = View.GONE
     }
 
-    private fun showUnknownError() {
+    override fun showUnknownError() {
         errorText.setText(R.string.fragment_follower_list_unknown_error)
         errorText.visibility = View.VISIBLE
     }
 
-    private fun showNetworkError() {
+    override fun showNetworkError() {
         errorText.setText(R.string.fragment_follower_list_network_error)
         errorText.visibility = View.VISIBLE
     }
 
-    private fun hideError() {
+    override fun hideError() {
         errorText.visibility = View.GONE
     }
 
-    private fun showRetry() {
+    override fun showRetry() {
         retryButton.visibility = View.VISIBLE
     }
 
-    private fun hideRetry() {
+    override fun hideRetry() {
         retryButton.visibility = View.GONE
     }
 }

@@ -12,6 +12,7 @@ import androidx.test.rule.ActivityTestRule
 import com.marcerlorbenites.followers.http.HttpErrorFactory
 import com.marcerlorbenites.followers.http.HttpFollowerService
 import com.marcerlorbenites.followers.http.JsonObjectConverter
+import com.marcerlorbenites.followers.list.FollowerListScrollController
 import com.marcerlorbenites.followers.rx.RxJavaDispatcher
 import io.reactivex.android.schedulers.AndroidSchedulers
 import okhttp3.OkHttpClient
@@ -36,8 +37,12 @@ class AndroidTestHelper {
             )
 
             setLazyDependency(application, "followerManager", followerManager)
-            setLazyDependency(application, "followersLoadOffset", followersLoadOffset)
             setLazyDependency(application, "imageLoader", imageLoader)
+            setLazyDependency(
+                application,
+                "scrollController",
+                FollowerListScrollController(followerManager, followersLoadOffset)
+            )
 
             enableNetworkOnMainThread()
 

@@ -4,6 +4,7 @@ import android.app.Application
 import com.marcerlorbenites.followers.http.HttpErrorFactory
 import com.marcerlorbenites.followers.http.HttpFollowerService
 import com.marcerlorbenites.followers.http.JsonObjectConverter
+import com.marcerlorbenites.followers.list.FollowerListScrollController
 import com.marcerlorbenites.followers.picasso.PicassoImageLoader
 import com.marcerlorbenites.followers.rx.RxJavaDispatcher
 import com.squareup.picasso.Picasso
@@ -21,8 +22,8 @@ class FollowerApplication : Application(), DependencyManager {
         )
     }
 
-    override val followersLoadOffset: Int by lazy {
-        BuildConfig.FOLLOWERS_LOAD_OFFSET
+    override val scrollController: FollowerListScrollController by lazy {
+        FollowerListScrollController(followerManager, BuildConfig.FOLLOWERS_LOAD_OFFSET)
     }
 
     override val imageLoader: ImageLoader by lazy {
