@@ -10,7 +10,6 @@ import com.marcerlorbenites.followers.*
 import com.marcerlorbenites.followers.list.Navigator
 import com.marcerlorbenites.followers.state.State
 import com.marcerlorbenites.followers.state.StateListener
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_follower_detail.*
 
 class FollowerDetailFragment : Fragment() {
@@ -23,7 +22,7 @@ class FollowerDetailFragment : Fragment() {
     private var followerManager: FollowerManager? = null
     private var navigator: Navigator? = null
     private var imageLoader: ImageLoader? = null
-    private var listener: StateListener<Followers>? = null
+    private var listener: StateListener<Followers, Error>? = null
     private var backNavigationListener: View.OnClickListener? = null
 
     override fun onAttach(context: Context?) {
@@ -38,8 +37,8 @@ class FollowerDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listener = object : StateListener<Followers> {
-            override fun onStateUpdate(state: State<Followers>) {
+        listener = object : StateListener<Followers, Error> {
+            override fun onStateUpdate(state: State<Followers, Error>) {
                 if (state.name == State.Name.LOADED) {
                     val followers = state.value!!
                     if (followers.followerSelected) {
@@ -74,11 +73,6 @@ class FollowerDetailFragment : Fragment() {
         toolbar.setNavigationOnClickListener(null)
         followerManager!!.unregisterListener(listener!!)
         super.onPause()
-    }
-
-    override fun onDestroyView() {
-        clearFindViewByIdCache()
-        super.onDestroyView()
     }
 
     override fun onDestroy() {

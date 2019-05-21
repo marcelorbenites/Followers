@@ -4,7 +4,6 @@ import com.marcerlorbenites.followers.Follower
 import com.marcerlorbenites.followers.FollowerService
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.IOException
 
 class HttpFollowerService(
     private val url: String,
@@ -20,7 +19,7 @@ class HttpFollowerService(
         val response = httpClient.newCall(request).execute()
 
         if (!response.isSuccessful) {
-            throw IOException()
+            throw IllegalStateException("Failed to get followers from server with status code: ${response.code()}")
         } else {
             return jsonConverter.parseFollowers(response.body()!!.string())
         }
@@ -35,7 +34,7 @@ class HttpFollowerService(
         val response = httpClient.newCall(request).execute()
 
         if (!response.isSuccessful) {
-            throw IOException()
+            throw IllegalStateException("Failed to get next followers from server with status code: ${response.code()}")
         } else {
             return jsonConverter.parseFollowers(response.body()!!.string())
         }

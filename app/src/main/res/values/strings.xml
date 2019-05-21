@@ -2,7 +2,8 @@
     <string name="app_name">Followers</string>
     <string name="fragment_follower_list_title">Followers</string>
     <string name="fragment_follower_list_no_team">No Club</string>
-    <string name="fragment_follower_list_error">Something went wrong.</string>
+    <string name="fragment_follower_list_unknown_error">Something went wrong</string>
     <string name="fragment_follower_list_retry_button">Retry</string>
     <string name="fragment_follower_detail_title">Follower</string>
+    <string name="fragment_follower_list_network_error">Network error</string>
 </resources>

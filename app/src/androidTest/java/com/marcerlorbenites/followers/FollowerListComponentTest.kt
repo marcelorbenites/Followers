@@ -88,7 +88,7 @@ class FollowerListComponentTest {
             FakeImageLoader()
         )
 
-        onView(withText(R.string.fragment_follower_list_error)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withText(R.string.fragment_follower_list_unknown_error)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.retryButton)).perform(click())
 
         onView(withText("John Lennon")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))

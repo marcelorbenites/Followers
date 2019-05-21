@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.marcerlorbenites.followers.*
 import com.marcerlorbenites.followers.state.State
 import com.marcerlorbenites.followers.state.StateListener
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_follower_list.*
 
 
@@ -26,7 +25,7 @@ class FollowerListFragment : Fragment() {
     private var followersLoadOffset: Int? = null
     private var navigator: Navigator? = null
     private var imageLoader: ImageLoader? = null
-    private var listener: StateListener<Followers>? = null
+    private var listener: StateListener<Followers, Error>? = null
     private var scrollListener: RecyclerView.OnScrollListener? = null
     private var followerClickListener: FollowerListAdapter.OnFollowerClickListener? = null
     private var retryListener: View.OnClickListener? = null
@@ -44,8 +43,8 @@ class FollowerListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listener = object : StateListener<Followers> {
-            override fun onStateUpdate(state: State<Followers>) {
+        listener = object : StateListener<Followers, Error> {
+            override fun onStateUpdate(state: State<Followers, Error>) {
                 when (state.name) {
                     State.Name.IDLE, State.Name.LOADING -> {
                         if (state.value == null) {
@@ -67,7 +66,14 @@ class FollowerListFragment : Fragment() {
                         hideRetry()
                     }
                     State.Name.ERROR -> {
-                        showError()
+
+                        val error = state.error!!
+
+                        if (error.isNetwork()) {
+                            showNetworkError()
+                        } else {
+                            showUnknownError()
+                        }
                         showRetry()
                         hideMainLoading()
                         hideListLoading()
@@ -147,8 +153,6 @@ class FollowerListFragment : Fragment() {
         layoutManager = null
         followersLoadOffset = null
         imageLoader!!.cancel(IMAGE_LOADER_REFERENCE)
-        followerList.removeOnScrollListener(scrollListener!!)
-        clearFindViewByIdCache()
         super.onDestroyView()
     }
 
@@ -193,7 +197,13 @@ class FollowerListFragment : Fragment() {
         followerList.visibility = View.GONE
     }
 
-    private fun showError() {
+    private fun showUnknownError() {
+        errorText.setText(R.string.fragment_follower_list_unknown_error)
+        errorText.visibility = View.VISIBLE
+    }
+
+    private fun showNetworkError() {
+        errorText.setText(R.string.fragment_follower_list_network_error)
         errorText.visibility = View.VISIBLE
     }
 

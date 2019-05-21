@@ -1,51 +1,39 @@
 package com.marcerlorbenites.followers.state
 
-abstract class StateMachine<T>(
+abstract class StateMachine<T, E>(
     private val dispatcher: Dispatcher<T>,
-    protected var currentState: State<T> = State(State.Name.IDLE),
-    private val listeners: MutableList<StateListener<T>> = mutableListOf()
+    private val errorFactory: ErrorFactory<E>,
+    protected var currentState: State<T, E> = State(State.Name.IDLE),
+    private val listeners: MutableList<StateListener<T, E>> = mutableListOf()
 ) {
 
-    fun registerListener(listener: StateListener<T>) {
+    fun registerListener(listener: StateListener<T, E>) {
         this.listeners.add(listener)
         listener.onStateUpdate(currentState)
     }
 
-    fun unregisterListener(listener: StateListener<T>) {
+    fun unregisterListener(listener: StateListener<T, E>) {
         this.listeners.remove(listener)
     }
 
-    fun moveToLoaded(function: () -> T) {
+    fun load(function: () -> T) {
         if (currentState.name != State.Name.LOADING) {
             updateState(State(State.Name.LOADING, currentState.value))
             dispatcher.dispatch(function, { value ->
                 updateState(State(State.Name.LOADED, value))
             }, {
-                moveToError()
+                moveToError(it)
             })
         } else {
             updateState(currentState)
         }
     }
 
-    fun moveToIdle(function: () -> Unit) {
-        if (currentState.name != State.Name.IDLE) {
-            updateState(State(State.Name.LOADING, currentState.value))
-            dispatcher.dispatch(function, {
-                updateState(State(State.Name.IDLE, currentState.value))
-            }, {
-                moveToError()
-            })
-        } else {
-            updateState(currentState)
-        }
+    private fun moveToError(throwable: Throwable) {
+        updateState(State(State.Name.ERROR, currentState.value, errorFactory.create(throwable)))
     }
 
-    fun moveToError() {
-        updateState(State(State.Name.ERROR, currentState.value))
-    }
-
-    private fun updateState(state: State<T>) {
+    private fun updateState(state: State<T, E>) {
         currentState = state
         for (listener in listeners) {
             listener.onStateUpdate(currentState)

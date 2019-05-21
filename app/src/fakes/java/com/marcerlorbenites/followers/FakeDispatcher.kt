@@ -11,14 +11,5 @@ class FakeDispatcher<T> : Dispatcher<T> {
             error.invoke(e)
         }
     }
-
-    override fun dispatch(function: () -> Unit, success: () -> Unit, error: (Throwable) -> Unit) {
-        try {
-            function.invoke()
-            success.invoke()
-        } catch (e: Throwable) {
-            error.invoke(e)
-        }
-    }
 }
 

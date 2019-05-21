@@ -2,7 +2,6 @@ package com.marcerlorbenites.followers.list
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
@@ -50,17 +49,17 @@ class FollowerListFragmentTest {
 
         rule.activity.showFragment(FollowerListFragment())
 
-        onView(withText("John Lennon")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withText("John Lennon")).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
         onView(allOf(withParent(withChild(withText("John Lennon"))), withText("The Beatles F.C.")))
-            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
 
-        onView(withText("Ringo Starr")).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withText("Ringo Starr")).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
         onView(allOf(withParent(withChild(withText("Ringo Starr"))), withText("The Beatles F.C.")))
-            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
 
     @Test
@@ -71,11 +70,11 @@ class FollowerListFragmentTest {
         )
         rule.activity.showFragment(FollowerListFragment())
 
-        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
 
     @Test
@@ -105,24 +104,41 @@ class FollowerListFragmentTest {
         )
         rule.activity.showFragment(FollowerListFragment())
 
-        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
 
     @Test
-    fun `Given an error loading followers When view is resumed Then show error And retry button`() {
+    fun `Given a network error loading followers When view is resumed Then show network error And retry button`() {
 
         rule.activity.testFollowerManager = FakeFollowerManager(
-            State(State.Name.ERROR)
+            State(State.Name.ERROR, error = FakeError(true))
         )
         rule.activity.showFragment(FollowerListFragment())
 
-        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.errorText)).check(matches(withText((R.string.fragment_follower_list_network_error))))
+        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+    }
+
+    @Test
+    fun `Given a unknown error loading followers When view is resumed Then show unknown error And retry button`() {
+
+        rule.activity.testFollowerManager = FakeFollowerManager(
+            State(State.Name.ERROR, error = FakeError(false))
+        )
+        rule.activity.showFragment(FollowerListFragment())
+
+        onView(withId(R.id.followerList)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.mainLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.listLoading)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.errorText)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.errorText)).check(matches(withText((R.string.fragment_follower_list_unknown_error))))
+        onView(withId(R.id.retryButton)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 }

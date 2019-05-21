@@ -9,6 +9,7 @@ import android.os.StrictMode
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.rule.ActivityTestRule
+import com.marcerlorbenites.followers.http.HttpErrorFactory
 import com.marcerlorbenites.followers.http.HttpFollowerService
 import com.marcerlorbenites.followers.http.JsonObjectConverter
 import com.marcerlorbenites.followers.rx.RxJavaDispatcher
@@ -30,6 +31,7 @@ class AndroidTestHelper {
 
             val followerManager = PlayerFollowerManager(
                 HttpFollowerService(baseUrl, OkHttpClient(), JsonObjectConverter()),
+                HttpErrorFactory(),
                 RxJavaDispatcher(mainThreadScheduler, mainThreadScheduler)
             )
 

@@ -1,6 +1,6 @@
 package com.marcerlorbenites.followers.state
 
-data class State<T>(val name: Name, val value: T? = null) {
+data class State<T, E>(val name: Name, val value: T? = null, val error: E? = null) {
     enum class Name {
         IDLE,
         LOADING,

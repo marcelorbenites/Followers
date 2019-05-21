@@ -1,6 +1,7 @@
 package com.marcerlorbenites.followers
 
 import android.app.Application
+import com.marcerlorbenites.followers.http.HttpErrorFactory
 import com.marcerlorbenites.followers.http.HttpFollowerService
 import com.marcerlorbenites.followers.http.JsonObjectConverter
 import com.marcerlorbenites.followers.picasso.PicassoImageLoader
@@ -15,6 +16,7 @@ class FollowerApplication : Application(), DependencyManager {
     override val followerManager: FollowerManager by lazy {
         PlayerFollowerManager(
             HttpFollowerService(BuildConfig.FOLLOWER_BASE_URL, OkHttpClient(), JsonObjectConverter()),
+            HttpErrorFactory(),
             RxJavaDispatcher(Schedulers.io(), AndroidSchedulers.mainThread())
         )
     }

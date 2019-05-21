@@ -1,5 +1,5 @@
 package com.marcerlorbenites.followers.state
 
-interface StateListener<T> {
-    fun onStateUpdate(state: State<T>)
+interface StateListener<T, E> {
+    fun onStateUpdate(state: State<T, E>)
 }

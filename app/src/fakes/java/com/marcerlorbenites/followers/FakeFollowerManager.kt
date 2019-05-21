@@ -1,10 +1,12 @@
 package com.marcerlorbenites.followers
 
+import com.marcerlorbenites.followers.state.ErrorFactory
 import com.marcerlorbenites.followers.state.State
 
 class FakeFollowerManager(
-    currentState: State<Followers> = State(State.Name.IDLE)
-) : FollowerManager(FakeDispatcher(), currentState) {
+    currentState: State<Followers, Error> = State(State.Name.IDLE),
+    errorFactory: ErrorFactory<Error> = FakeErrorFactory()
+) : FollowerManager(FakeDispatcher(), currentState, errorFactory) {
     override fun setup() {
     }
 

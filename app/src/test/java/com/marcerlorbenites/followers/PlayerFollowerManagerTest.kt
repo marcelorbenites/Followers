@@ -46,10 +46,11 @@ class PlayerFollowerManagerTest {
         )
         val manager = PlayerFollowerManager(
             FakeFollowerService(followerList),
+            FakeErrorFactory(),
             FakeDispatcher()
         )
 
-        val listenerMock = mockk<StateListener<Followers>>(relaxed = true)
+        val listenerMock = mockk<StateListener<Followers, Error>>(relaxed = true)
         manager.registerListener(listenerMock)
         manager.setup()
 
@@ -95,10 +96,11 @@ class PlayerFollowerManagerTest {
         )
         val manager = PlayerFollowerManager(
             FakeFollowerService(followerList),
+            FakeErrorFactory(),
             FakeDispatcher()
         )
 
-        val listenerMock = mockk<StateListener<Followers>>(relaxed = true)
+        val listenerMock = mockk<StateListener<Followers, Error>>(relaxed = true)
         manager.registerListener(listenerMock)
         manager.loadFollowers()
 
@@ -179,10 +181,11 @@ class PlayerFollowerManagerTest {
 
         val manager = PlayerFollowerManager(
             FakeFollowerService(firstFollowers, nextFollowers),
+            FakeErrorFactory(),
             RxJavaDispatcher(Schedulers.trampoline(), Schedulers.trampoline())
         )
 
-        val listenerMock = mockk<StateListener<Followers>>(relaxed = true)
+        val listenerMock = mockk<StateListener<Followers, Error>>(relaxed = true)
         manager.registerListener(listenerMock)
         manager.setup()
 
@@ -217,11 +220,12 @@ class PlayerFollowerManagerTest {
 
         val manager = PlayerFollowerManager(
             FakeFollowerService(),
+            FakeErrorFactory(),
             FakeDispatcher(),
             State(State.Name.LOADED, Followers(list))
         )
 
-        val listenerMock = mockk<StateListener<Followers>>(relaxed = true)
+        val listenerMock = mockk<StateListener<Followers, Error>>(relaxed = true)
         manager.registerListener(listenerMock)
         manager.selectFollower("1")
 
