@@ -11,7 +11,7 @@ import org.junit.Test
 
 class FollowerListPresenterTest {
     @Test
-    fun `Given followers are loaded When view is resumed Then show followers And hide main loading`() {
+    fun `Given followers are loaded When state is updated Then show followers And hide main loading`() {
 
         val viewMock = mockk<FollowerListView>(relaxed = true)
         val presenter = FollowerListPresenter(viewMock, "No Club")
@@ -51,7 +51,7 @@ class FollowerListPresenterTest {
     }
 
     @Test
-    fun `Given followers are loading And there are no followers When view is resumed Then show main loading`() {
+    fun `Given followers are loading And there are no followers When state is updated Then show main loading`() {
 
         val viewMock = mockk<FollowerListView>(relaxed = true)
         val presenter = FollowerListPresenter(viewMock, "No Club")
@@ -71,7 +71,7 @@ class FollowerListPresenterTest {
     }
 
     @Test
-    fun `Given followers are loading And there are followers When view is resumed Then show list loading`() {
+    fun `Given followers are loading And there are followers When state is updated Then show list loading`() {
 
         val viewMock = mockk<FollowerListView>(relaxed = true)
         val presenter = FollowerListPresenter(viewMock, "No Club")
@@ -108,7 +108,7 @@ class FollowerListPresenterTest {
     }
 
     @Test
-    fun `Given a network error loading followers When view is resumed Then show network error And retry button`() {
+    fun `Given a network error loading followers When state is updated Then show network error And retry button`() {
 
         val viewMock = mockk<FollowerListView>(relaxed = true)
         val presenter = FollowerListPresenter(viewMock, "No Club")
@@ -127,7 +127,7 @@ class FollowerListPresenterTest {
     }
 
     @Test
-    fun `Given a unknown error loading followers When view is resumed Then show unknown error And retry button`() {
+    fun `Given a unknown error loading followers When state is updated Then show unknown error And retry button`() {
 
         val viewMock = mockk<FollowerListView>(relaxed = true)
         val presenter = FollowerListPresenter(viewMock, "No Club")

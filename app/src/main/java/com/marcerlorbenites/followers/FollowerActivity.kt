@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.marcerlorbenites.followers.detail.FollowerDetailContainer
 import com.marcerlorbenites.followers.list.FollowerListContainer
 import com.marcerlorbenites.followers.list.FollowerListScrollController
-import com.marcerlorbenites.followers.list.Navigator
+import com.marcerlorbenites.followers.navigator.FragmentNavigator
 
 class FollowerActivity : AppCompatActivity(), FollowerListContainer, FollowerDetailContainer {
 
@@ -20,8 +20,8 @@ class FollowerActivity : AppCompatActivity(), FollowerListContainer, FollowerDet
     override val scrollController: FollowerListScrollController by lazy {
         (application as DependencyManager).scrollController
     }
-    override val navigator: Navigator by lazy {
-        Navigator(supportFragmentManager)
+    override val navigator: FragmentNavigator by lazy {
+        FragmentNavigator(supportFragmentManager)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
