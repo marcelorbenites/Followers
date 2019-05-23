@@ -63,7 +63,7 @@ class HttpFollowerServiceTest {
         val request = server.takeRequest()
 
         assertEquals("GET", request.method)
-        assertEquals("/followers", request.path)
+        assertEquals("/Followers/db", request.path)
     }
 
     @Test
@@ -104,7 +104,7 @@ class HttpFollowerServiceTest {
         val request = server.takeRequest()
 
         assertEquals("GET", request.method)
-        assertEquals("/followers?current_follow_slug=2", request.path)
+        assertEquals("/SecondPage/db", request.path)
     }
 
     @Test

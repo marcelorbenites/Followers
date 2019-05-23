@@ -12,7 +12,7 @@ class HttpFollowerService(
 ) : FollowerService {
     override fun getFollowers(): List<Follower> {
         val request = Request.Builder()
-            .url("${url}followers")
+            .url("${url}Followers/db")
             .get()
             .build()
 
@@ -27,7 +27,7 @@ class HttpFollowerService(
 
     override fun getNextFollowers(lastFollowerId: String): List<Follower> {
         val request = Request.Builder()
-            .url("${url}followers?current_follow_slug=$lastFollowerId")
+            .url("${url}SecondPage/db")
             .get()
             .build()
 
